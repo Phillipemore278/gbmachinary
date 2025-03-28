@@ -1,0 +1,47 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .bi{
+        font-size: 30px;
+        color: green;
+        margin-left: 20px;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+
+<div class="admin-dashboard">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8 mt-4">
+              <h3 class="text-center">Logged In as Admin</h3>
+          </div>
+      </div>
+    </div>
+</div>
+<!-- register form -->
+<section id="add-update-product">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center py-5">
+            <div class="col-md-7 py-md-6">
+                <div class="card shadow">
+                    <h2 class="card-title text-info mt-5 ms-4">Delete Customer</h2>
+                    <hr class="mt-0">
+                    <div class="card-body">
+                        <form action="." method="POST" enctype="multipart/form-data" >
+                            {% csrf_token %}
+                            <p>Are you sure you want to delete <strong>{{customer.full_name}}'s </strong> account?</p>
+                            <input type="submit" value="Delete" class="btn btn-danger fw-bold px-5">
+                            <a href="{% url 'account:admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

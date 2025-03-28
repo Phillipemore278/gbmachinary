@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+</head>
+<body>
+    <p>A new order was placed by:</p>
+    <p><strong>Name: </strong>{{name}}</p>
+    <p><strong>Email: </strong>{{email}}</p>
+    <p><strong>Country: </strong>{{country}}</p>
+    <p><strong>Total: </strong>{{total}}</p> <br>
+    <h5>Items Purchased</h5>
+    {% for item in items %}
+    <p>{{item.product.title}} |<span> {{item.product.price}}</span></p>
+    {% endfor %}
+</body>
+</html>

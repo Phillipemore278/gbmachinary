@@ -1,0 +1,71 @@
+{% load static %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top scroll2">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img src="{% static 'images/logo-mg-logo.png' %}" class="logo-logo"><img src="{% static 'images/logo-mg-text.png' %}" class="logo-text"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'frontend:home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'frontend:about' %}">About</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Service</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'frontend:all_products' %}">Products</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'frontend:all_products' %}">Products</a>
+          </li>
+            {% if request.user.is_staff%}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account:admin_dashboard' %}">Dashboard</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account:customer_dashboard' %}">Dashboard</a>
+              </li>
+            {% endif %}
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'frontend:contact' %}">Contact</a>
+          </li>
+          <li class="nav-item mt-md-2 pe-2">
+            <div id="google_translate_element"></div>
+          </li>
+        </ul>
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'account:logout' %}" class="btn btn-danger fw-bold rounded-pill px-4 ms-5 mb-5 mb-sm-0">Logout</a>
+        {% else %}
+          <a href="{% url 'frontend:register' %}" class="btn btn-danger fw-bold rounded-pill px-4 mb-5 mb-sm-0">Register</a>
+          <a href="{% url 'frontend:login' %}" class="btn btn-danger fw-bold rounded-pill px-4 ms-5 mb-5 mb-sm-0">Login</a>
+        {% endif %}
+        <a type="button" role="button" href="{% url 'basket:basket_summary' %}" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          data-bs-custom-class="custom-tooltip" data-bs-title="Click to View Cart Items"  class=" border-0 basket-btn px-4">
+            {% with total_qty=basket|length %}
+            <div id="basket-qty" class="basket-qty">
+              {% if total_qty > 0 %}
+              {{ total_qty }}
+              {% else %}
+              0
+              {% endif %}
+            </div>
+            {% endwith %}
+            <div>
+              <i class="bi bi-cart cart-icon"></i>
+            </div>
+          </a>
+      </div>
+    </div>
+</nav>
+
+<!-- btn btn-outline-secondary -->

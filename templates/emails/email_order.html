@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Machinary</title>
+</head>
+<body>
+    <p>Dear {{name}},</p>
+    <P>Thank you for choosing Global Machinary. Here is Summary of your orders.</P> 
+    <p>A payment details will be forwarded to you soon, Please send the payment receipt to this email after your payment for verification purpose</p>
+
+    <h5>Order Details</h5>
+    <!-- <p>Order ID: {{orde_id}}</p> -->
+    <p>Order Date: {{date}}</p>
+    <p>Customer Name: {{name}}</p>
+    <p>Country: {{country}}</p>
+    <p>City:  {{city}}</p>
+    <p>Total Price: {{total}}</p>
+    <p>Please click the link below to view your receipt></p>
+    <a href="https://www.globalmachinary.com/order/view_receipt/{{order_id}}/">My Receipt</a> <br>
+    <p>Regards, <br>Global Machinary Team, <br>https://www.globalmachinary.com</p>
+    
+</html>

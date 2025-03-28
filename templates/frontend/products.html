@@ -1,0 +1,56 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<style>
+    .p-card img{
+      height: 200px;
+      object-fit: cover;
+    }
+</style>
+
+
+<!-- banner -->
+<div class="banner-about">
+  <div class="container py-5">
+    <div class="row justify-content-center align-items-center py-5 mt-3">
+        <div class="col-8">
+            <h3 class="text-center"><a href="/">Home</a>/ Available Products </h3>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- products -->
+<section id="products">
+    <div class="container py-5">
+      <h1 class="text-center text-danger mb-5">Available Products</h1>
+      <div class="row">
+        {% for product in products %}
+        <div class="col-md-3 mb-4 ">
+          <div class="card  p-card h-100">
+            {% for imgg in product.media.all %}
+              {% if imgg.is_featured %}
+              <img src="{{imgg.image.url}}" class="card-img-top">
+              {% endif %}
+            {% endfor %}
+            <div class="card-body card-body-smile" >
+              <h6 class="card-title">{{product.title| slice:'0:22'}}....</h6>
+              <p class="card-text fw-bold">Price: ${{product.price|intcomma}}</p>
+              <a href="{% url 'frontend:product_detail' product.id %}" class="btn btn-danger fw-bold btn-sm w-100 h-auto">View Details</a>
+            </div>
+           
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <hr>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <a href="{% url 'frontend:all_products' %}" class="btn btn-danger fw-bold rounded-pill px-5">View More Products</a>
+      </div>
+      
+    </div>
+</section>
+{% endblock %}

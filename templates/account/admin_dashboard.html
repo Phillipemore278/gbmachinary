@@ -1,0 +1,212 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8 mt-4">
+              <h3 class="text-center">Logged In as Admin</h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Dashboard</h1>
+            <div class="row justify-content-between align-item-center">
+              <div class="col-6 col-md-10">
+                <p class="lead mb-0">Welcome <span class="text-success fw-bold">Admin</span></p>
+              </div>
+              <div class="col-6 col-md-2">
+                  <p><a href="{% url 'account:change_password_customer' %}" class="btn btn-outline-secondary btn-sm fw-bold px-4">Settings</a> </p>  
+                  <a href="{% url 'account:add_product' %}" class="btn btn-primary btn-sm fw-bold">Add new Product</a>
+              </div>
+            </div>
+            
+            {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      {{message}}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+            {% endif %}
+                    
+            <hr class="mt-0">
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-md-6">
+            <h2 class="text-center text-primary">Customers</h2>
+            <div class="card">
+                <!-- <a href="" class="btn btn-danger fw-bold w-100 h-auto mt-4">Add More Customers</a> -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed ">
+                            <thead>
+                              <tr>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">City</th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for customer in customers %}
+                              <tr>
+                                <td>{{customer.full_name}}</td>
+                                <td>{{customer.email}}</td>
+                                <td>{{customer.country}}</td>
+                                <td>{{customer.city}}</td>
+                                <td><a href="{% url 'account:delete_customer' customer.id %}" class="btn btn-danger btn-sm fw-bold text-white">Delete</a></td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-center text-primary">Products</h2>
+            <div class="card">
+                <!-- <a href="" class="btn btn-danger fw-bold w-100 h-auto mt-4">Add More Customers</a> -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed ">
+                            <thead>
+                              <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Prize</th>
+                                <th scope="col">Created</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for product in products %}
+                              <tr>
+                                <td>{{product.title|slice:'0:20'}}</td>
+                                <td>{{product.price|intcomma}}</td>
+                                <td>{{product.created}}</td>
+                                <td><a href="{% url 'account:edit_product' product.id %}" class="btn btn-info btn-sm fw-bold text-white">Edit</a></td>
+                                <td><a href="{% url 'account:delete_product' product.id %}" class="btn btn-danger btn-sm fw-bold text-white">Delete</a></td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- product pagination start -->
+                        <div class="pagination">
+                          <span class="step-links">
+                              {% if products.has_previous %}
+                                  <a href="?product_page=1">&laquo; first</a>
+                                  <a href="?product_page={{ products.previous_page_number }}">previous</a>
+                              {% endif %}
+                      
+                              <span class="current">
+                                  Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                              </span>
+                      
+                              {% if products.has_next %}
+                                  <a href="?product_page={{ products.next_page_number }}">next</a>
+                                  <a href="?product_page={{ products.paginator.num_pages }}">last &raquo;</a>
+                              {% endif %}
+                          </span>
+                        </div>
+                         <!-- product pagination end -->
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="row py-5">
+        <div class="col-md-12">
+            <h2 class="text-center text-primary">Orders</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Balance</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in orders %}
+                              <tr>
+                                <td>{{order.created}}</td>
+                                <td>{{order.full_name}}</td>
+                                <td>{{order.email}}</td>
+                                <td>${{order.total|intcomma}}</td>
+                                <td>${{order.paid|intcomma}}</td>
+                                <td>${{order.get_final_balance|intcomma}}</td>
+                                <td>
+                                {% if order.status == 'Pending, awaiting payment' %}
+                                  <strong class="text-warning">{{order.status}}</strong>
+                                {% elif order.status == 'Delivery in Progress' %}
+                                  <strong class="text-primary">{{order.status}}</strong>
+                                {% elif order.status == 'Stopped by custom' %}
+                                  <strong class="text-danger">{{order.status}}</strong>
+                                {% else %}
+                                  <strong class="text-success">{{order.status}}</strong>
+                                {% endif %}
+                                </td>
+                                <td><a href="{% url 'order:edit_order' order.id %}" class="btn btn-info btn-sm fw-bold text-white">Update</a></td>
+                                <!-- <td><a href="" class="btn btn-info btn-sm fw-bold text-white" data-bs-toggle="modal" data-bs-target="#edit-order{{order.id}}">Update</a></td> -->
+                                <td><a href="{% url 'order:delete_order' order.id %}" class="btn btn-danger btn-sm fw-bold text-white">Delete</a></td>
+                                <td><a href="{% url 'order:view_receipt' order.id %}" class="btn btn-primary btn-sm fw-bold text-white">Receipt</a></td>
+                              </tr>
+
+                              <!-- update order model -->
+                              <!-- <div class="modal fade" id="edit-order{{order.id}}" tabindex="-1" aria-labelledby="edit-order{{order.id}}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="exampleModalLabel">Update Order Status and Amount Paid for {{ order.full_name}}</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form action="{% url 'order:edit_order' order.id%}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                          <label for="status" class="form-label">Paid</label>
+                                          <input type="text" value="{{order.paid}}" class="form-control" id="status">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="status" class="form-label">Status</label>
+                                          <input type="text" value="{{order.status}}" class="form-control" id="status">
+                                        </div>
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div> -->
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<!-- banner -->
+<div class="banner-about">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8">
+              <h3 class="text-center"><a href="">Home</a>/ Cart Items Summary </h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        {% if basket|length == 0 %}
+            <div class="col-12">Your Cart is empty <a href="{% url 'frontend:all_products' %}">Shop</a></div>
+        {% else %}
+        <div class="col">
+          <div class="card">
+            <div class="card-body p-4">
+  
+              <div class="row">
+  
+                <div class="col-lg-7">
+                  <!-- <h5 class="mb-3"><a href="#!" class="text-body"><i
+                        class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5> -->
+                  
+  
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                      <p class="mb-1">Shopping cart</p>
+                      <!-- <p class="mb-0">You have 4 items in your cart</p> -->
+                    </div>
+                    <div>
+                      <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                          class="text-body">Price <i class="fas fa-angle-down mt-1"></i></a></p>
+                    </div>
+                  </div>
+                  <hr>
+                {% for item in basket %}
+                {% with product=item.product %}
+                  <div class="card mb-3 mb-lg-0 product-item" data-index="{{product.id}}">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row align-items-center">
+                          <div>
+                            {% for imgg in product.media.all %}
+                            {% if imgg.is_featured %}
+                            <img
+                              src="{{imgg.image.url}}"
+                              class="img-fluid rounded-3" alt="Shopping item" style="width: 65px; height: 65px; object-fit: cover;">
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+                          <div class="ms-3">
+                            <h5>{{product.title|slice:':12'}}</h5>
+                            <p><strong>QTY: </strong>{{item.qty}}</p>
+                            <!-- <p class="small mb-0">{{product.description|slice:':29'}}......</p> -->
+                          </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                          <!-- <div style="width: 50px;">
+                            <h5 class="fw-normal mb-0">1</h5>
+                          </div> -->
+                          <div style="width: 100px;">
+                            <h5 class="mb-0">${{product.price|intcomma}} <span class="small text-muted">( Each)</span></h5>
+                          </div>
+                          <a type="button" id="delete-button" data-index="{{product.id}}" class="ps-4 delete-button" style="color: #f00b0b;"><i class="bi bi-trash"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endwith %}
+                {% endfor %}
+  
+                </div>
+                <div class="col-lg-5">
+  
+                  <div class="card bg-light text-dark rounded-3">
+                    <div class="card-body">
+                      <p class="text-center fw-bold">Please make sure you fill the forms below with your information before checking out</p>
+                      <hr class="my-4">
+  
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-2">Subtotal</p>
+                        <p class="mb-2" id="subtotal">${{basket.get_subtotal_price|intcomma}}</p>
+                      </div>
+  
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-2">Shipping</p>
+                        <p class="mb-2" id="shipping">${{basket.get_shipping_price}}</p>
+                      </div>
+  
+                      <div class="d-flex justify-content-between mb-4">
+                        <p class="mb-2">Total(Incl. taxes)</p>
+                        <p class="mb-2" id="total">${{basket.get_total_price|intcomma}}</p>
+                      </div>
+                      <hr class="my-4">
+                      {% if form.errors %}
+                        <p class="text-white fw-bold">Please correct the following errors:</p>
+                        {% for field in form %}
+                            {% if field.errors %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ field.label }}: {{ field.errors|striptags }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                      <form action="{% url 'basket:checkout_order' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.c_full_name.id_for_label }}" class="form-label">Full Name</label>
+                                    {{form.c_full_name}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.c_email.id_for_label }}" class="form-label">Email</label>
+                                    {{form.c_email}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.c_country.id_for_label }}" class="form-label">Country</label>
+                                    {{form.c_country}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.c_city.id_for_label }}" class="form-label">City</label>
+                                    {{form.c_city}}
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" value="Checkout" class="btn btn-secondary fw-bold text-white w-100 h-auto btn-sm ">
+                        
+                      </form>
+  
+                      <!-- <button type="button" class="btn btn-secondary fw-bold text-white w-100 h-auto btn-sm ">
+                        Checkout
+                      </button> -->
+  
+                    </div>
+                  </div>
+  
+                </div>
+  
+              </div>
+  
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    $(document).on("click", ".delete-button", function (e) {
+    e.preventDefault();
+    var prodid = $(this).data("index");
+    $.ajax({
+      type: "POST",
+      url: '{% url "basket:basket_delete" %}',
+      data: {
+        productid: $(this).data("index"),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: "post",
+      },
+      success: function (json) {
+        $('.product-item[data-index="' + prodid + '"]').remove();
+
+        if (json.qty == 0) {
+          total = 0
+          subtotal = 0
+        } else {
+          total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
+          subtotal = json.subtotal
+        }
+
+        document.getElementById("subtotal").innerHTML = subtotal;
+        document.getElementById("basket-qty").innerHTML = json.qty;
+        document.getElementById("total").innerHTML = total;
+        document.getElementById("shipping").innerHTML = `$${json.shipping}`;
+      },
+      error: function (xhr, errmsg, err) {},
+    });
+  });
+  </script>
+{% endblock %}

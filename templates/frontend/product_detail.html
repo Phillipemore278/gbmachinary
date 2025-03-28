@@ -1,0 +1,146 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<style>
+  #ProductImg{
+    height: 450px;
+    object-fit: cover;
+  }
+  .small-img{
+    height: 110px;
+    width: 130px;
+    object-fit: cover;
+  }
+  @media only screen and (max-width:767px) {
+    #ProductImg{
+      height: 300px;
+    }
+    .small-img{
+      height: 80px;
+    }
+  }
+</style>
+
+<!-- banner -->
+<div class="banner-product-detail">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8">
+              <h3 class="text-center"><a href="">Home</a>/ Product Details </h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+<!-- details -->
+<div class="container py-5">
+  <div class="row py-4">
+    <!-- <h5>product.name</h5> -->
+    <div class="col-md-6">
+      {% for imgg in product.media.all %}
+        {% if imgg.is_featured %}
+        <img src="{{imgg.image.url}}" class="card-img-top" id="ProductImg">
+        {% endif %}
+      {% endfor %}
+      <div class="row mt-4">
+        {% for image in product_images %}
+        <div class="col-3 mb-2">
+          <img src="{{image.image.url}}" class="img-fluid small-img">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h3>{{product.title}}</h3>
+      <hr class="mt-0">
+      <h3 class="text-primary">Description</h3>   
+      <p>{{product.description}}</p>
+      <hr class="mt-0">
+      <h3>Prize: ${{product.price|intcomma}}</h3>
+        <div class="mb-3">
+          <label for="form-select" class="form-label fw-bold">Quantity</label>
+          <select id="qty-select" class="form-select" aria-label="Default select example">
+              <!-- <label for="floatingInput">Email address</label> -->
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+          </select>
+        </div>
+      
+      <div id="bt-alert" class=" text-success fw-bold"></div>
+      <!-- <div id="bt-alert" class="alert alert-success alert-dismissible fade show btt-alert" role="alert">
+        Item is successfully added to card
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div> -->
+      <button value="{{product.id}}" id="add-button" class="btn btn-secondary fw-bold btn-sm mt-4 w-50 h-auto">Add To Cart</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+  
+  <!-- mode section -->
+  <section id="mode-section-2">
+    <div class="container pt-5 pb-3 text-white">
+      <div class="row py-5">
+        <div class="col-md-6">
+          <h3 class="text-info">--  LOCATION</h3> 
+          <h1>Our International Markets</h1>
+          <p>From Alaska to Colombia, Europe, Africa to the Middle East and around the world, GB has the products, services and expertise to ensure your drilling operation runs efficiently and safely.</p>
+          <p>We are always ready to help solve the subsurface energy challenges of today and tomorrow, wherever and whatever they may be.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'images/worker3.jpg' %}" alt="" class="img-fluid" style="opacity: 0.3;">
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+<script>
+  var ProductImg = document.getElementById("ProductImg");
+    var SmallImg = document.getElementsByClassName("small-img");
+    for(let i = 0; i < SmallImg.length; i++){
+        SmallImg[i].onclick = function()
+        {
+            ProductImg.src = SmallImg[i].src;
+        }
+    }
+</script>
+
+
+<!-- getting the product to add to cart -->
+<script>
+  $(document).on('click', '#add-button', function (e) {
+    e.preventDefault();
+    console.log($('#add-button').val())
+    $.ajax({
+      type: 'POST',
+      url: '{% url "basket:basket_add" %}',
+      data: {
+        productid: $('#add-button').val(),
+        qty: $('#qty-select option:selected').text(),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        document.getElementById("basket-qty").innerHTML = json.qty
+        document.getElementById("bt-alert").innerHTML = "Item is successfuly added to cart"
+      },
+      error: function (xhr, errmsg, err) {}
+    });
+  })
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8 mt-4">
+              <h3 class="text-center">Logged In as Admin</h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center align-item-center">
+        
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="text-primary text-center my-4">Update Order Status and Amount Paid for {{order.full_name}}</h4>
+                    <form action="." method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" value="Save Changes" class="btn btn-danger fw-bold w-100 h-auto btn-sm">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

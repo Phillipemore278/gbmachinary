@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400;900&display=swap');
+
+:root {
+  --primary: #fc0000;
+  --secondary: #3d3d3d; 
+  --white: #fff;
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Lato', sans-serif;
+}
+
+body{
+	background: var(--secondary);
+	padding: 50px;
+	color: var(--secondary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+}
+
+.invoice_wrapper{
+	border: 3px solid var(--primary);
+    margin: 5px 10px;
+	/* width: 700px;
+	max-width: 100%; */
+}
+
+.logo-logo{
+    width: 60px;
+}
+/* .logo-text{
+    width: 230px;
+} */
+
+.table-heaed th{
+    background: var(--primary)  !important;
+    color: #fff;
+}
+.billed-to h4,
+.invoice-detail h4{
+    color: var(--primary);
+}
+.total-money td{
+    background: var(--primary);
+    color: #fff;
+}
+
+@media only screen and (max-width: 600px) {
+    body{
+        padding: 0;
+    }
+    .invoice_wrapper{
+        border: 1px solid var(--primary);
+        margin: 5px;
+    }
+    /* .logo-logo{
+        width: 140px;
+    } */
+
+    .billed-to p,
+    .invoice-detail p{
+        font-size: 10px;
+    }
+    .billed-to h4,
+    .invoice-detail h4{
+        font-size: 16px;
+    }
+    .table-condensed{
+        font-size: 10px;
+    }
+    .payment h5{
+        font-size: 14px;
+    }
+    .payment p{
+        font-size: 10px;
+    }
+    .footer h5,
+    .footer h6{
+        font-size: 14px;
+    }
+    .footer p{
+        font-size: 10px;
+    }
+}

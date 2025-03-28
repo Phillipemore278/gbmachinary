@@ -1,0 +1,152 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .bi{
+        font-size: 30px;
+        color: green;
+        margin-left: 20px;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+
+<div class="admin-dashboard">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8 mt-4">
+              <h3 class="text-center">Logged In as Admin</h3>
+          </div>
+      </div>
+    </div>
+</div>
+<!-- register form -->
+<section id="add-update-product">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center py-5">
+            <div class="col-md-7 py-md-6">
+                <div class="card shadow">
+                    {% if form.errors %}
+                        <p class="text-white fw-bold">Please correct the following errors:</p>
+                        {% for field in form %}
+                            {% if field.errors %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ field.label }}: {{ field.errors|striptags }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if media_form.non_form_errors %}
+                        <p class="text-white fw-bold">Please correct the following general errors:</p>
+                        <div class="alert alert-primary" role="alert">
+                            {{ media_form.non_form_errors|striptags }}
+                        </div>
+                    {% endif %}
+
+                    {% for form in media_form.forms %}
+                        {% if form.errors %}
+                            <p class="text-dark fw-bold">Please correct the following errors for media {{ forloop.counter }}:</p>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <div class="alert alert-primary" role="alert">
+                                        {{ field.label }}: {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    <h2 class="card-title text-info mt-5 ms-4">{{title}}</h2>
+                    <hr class="mt-0">
+                    <div class="card-body">
+                        <form action="." method="POST" enctype="multipart/form-data" >
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="mb-3">
+                                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                                        {{form.title}}
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="mb-3">
+                                        <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+                                        {{form.price}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                                        {{form.description}}
+                                    </div>
+                                </div>  
+                            </div>
+                            <hr>
+                            <h3 class="text-primary">
+                                Add Images
+                            </h3>
+                            <p class="mb-0"><strong>Please Note: Only Check One is Feature and leave the rest</strong></p>
+                            <hr class="mt-0">
+                            <div id="form-set">
+                                {{ media_form.management_form }}
+                                {% for form2 in media_form %}
+                                    {% for hidden in form2.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="inline {{ media_form.prefix }} mb-2">
+                                                {{ form2.image.errors }}
+                                                {{ form2.image.label_tag }}
+                                                {{ form2.image }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="inline {{ media_form.prefix }} mb-2">
+                                                {{ form2.is_featured.errors }}
+                                                {{ form2.is_featured.label_tag }}
+                                                {{ form2.is_featured }}
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-2">
+                                            <input type="button" value="delete" class="delete btn btn-sm btn-danger mt-4">
+                                        </div> -->
+                                    </div> 
+                                    <hr>
+                                {% endfor %}
+                                
+                            </div>
+                            <!-- {{ media_form.management_form }}
+
+                            {% for form in media_form %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        {{form.image}}
+                                    </div>
+                                    <div class="col-md-3">
+                                        {{form.is_featured}}
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %} -->
+                      
+                            <input type="submit" value="Save" class="btn btn-danger fw-bold px-5 w-100 h-auto">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

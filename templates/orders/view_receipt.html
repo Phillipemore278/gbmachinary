@@ -1,0 +1,177 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Receipt</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/receipt.css' %}">
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="card">
+                    <div class="card-body invoice_wrapper">
+
+                        <!-- receipt header start here -->
+                        <div class="row">
+                            <div class="col-6 col-md-8 ">
+                                <img src="{% static 'images/logo-mg-logo.png' %}" class="logo-logo">
+                                <!-- <img src="{% static 'images/logo-mg-text.png' %}" class="logo-text"> -->
+                            </div>
+                            <div class="col-6 col-md-4 invoice-detail">
+                                <h4>INVOICE</h4>
+                                <p class="mb-0"># {{order.order_key}}</p>
+                                <p><strong>Issued: </strong> {{order.created}}</p>
+                            </div>
+                        </div>
+                        <hr class="my-0">
+                        <div class="row py-2">
+                            <div class="col-6 col-md-8 billed-to">
+                                <p class="mb-1">Billed To</p>
+                                <h4 class="mb-0">{{order.full_name}}</h4>
+                                <p class="mb-0">{{order.city}}, {{order.country}}</p>
+                            </div>
+                            <div class="col-6 col-md-4 billed-to">
+                                <p class="mb-1">Total Due</p>
+                                <h4 class="mb-0">${{order.get_final_balance|intcomma}}</h4>
+                                
+                            </div>
+                        </div>
+
+                        <!-- table -->
+                        <hr class="my-1">
+                        <div class="row">
+                            <div class="col-md-12">   
+                            <div class="table-responsive">
+                                <table class="table table-condensed">
+                                    <thead class="table-heaed">
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in order_items %}
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>{{item.product.title|slice:':60'}}</td>
+                                            <td>{{item.quantity}}</td>
+                                            <td>${{item.product.price|intcomma}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div> 
+                            </div>
+                        </div>
+                        <hr class="my-1">
+
+                        <!-- grand total -->
+                        <div class="row">
+                            <div class="col-5 col-md-8 payment">
+                                <h5 class=" text-secondary">Payment Method</h5>
+                                <p class="text-secondary">Please follow the payment instructions you received in your email for proper and safe delivery. contact us if you have more questions</p>
+                                <hr>
+                                <h5 class="pt-md-1 text-danger">Shipment Charges</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Shipment:</td>
+                                                        <td>${{order.shipping_price|intcomma}}</td>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                        <td>Interest:</td>
+                                                        <td>$0.00</td>
+                                                    </tr> -->
+                                                    
+                                                    <tr>
+                                                        <td>Tax:</td>
+                                                        <td>(0.00 %)</td>
+                                                    </tr>
+                                                    <tr class="total-money">
+                                                        <td><strong>Total:</strong></td>
+                                                        
+                                                        <td><strong>${{order.shipping_price|intcomma}}</strong></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-7 col-md-4">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Sub Total:</strong></td>
+                                                {% if order.sub_total is None%}
+                                                    <td><strong>$0.00</strong></td>
+                                                {% else %}
+                                                    <td><strong>${{order.sub_total|intcomma}}</strong></td>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                <td>Advance Paid:</td>
+                                                <td>${{order.paid|intcomma}}</td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td>Shipping:</td>
+                                                {% if order.sub_total <= 0 %}
+                                                    <td>$0.00</td>
+                                                {% elif order.sub_total <= 45000 %}
+                                                    <td>$37,500.50</td>
+                                                {% elif order.sub_total > 45000 %}
+                                                    <td>$37,500.50</td>
+                                                {% else %}
+                                                    <td>$0.00</td>
+                                                {% endif %}
+                                            </tr> -->
+                                            <tr>
+                                                <td>Tax:</td>
+                                                <td>(0.00 %)</td>
+                                            </tr>
+                                            <tr class="total-money">
+                                                <td><strong>Grand Total:</strong></td>
+                                                <td><strong>${{order.get_final_balance|intcomma}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- footer -->
+                        <div class="row d-none d-md-block">
+                            <hr>
+                            <div class="col-md-12 footer">
+                                <h5 class="text-primary fw-bold">Thank you and best wishes</h5>   
+                                <h6 class="fw-bold text-secondary">Terms & conditions</h6>
+                                <p class="mt-0 text-secondary">Dear Customer, please note that your order will not be shipped until you finish your payment. Also we are not responsible for extra taxes if any is required by the custom of the destination country.</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+</body>
+</html>

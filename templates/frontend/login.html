@@ -1,0 +1,51 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- register form -->
+<section id="login">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center py-5">
+            <div class="col-md-5 py-md-5">
+                <div class="card shadow">
+                    <!-- <center>
+                        <a class="navbar-brand mt-5" href="#"><img src="{% static 'images/logo-mg-logo.png' %}" class="logo-logo"></a>
+                    </center> -->
+                    {% if form.errors %}
+                        <p class="text-white fw-bold">Please correct the following errors:</p>
+                        {% for field in form %}
+                            {% if field.errors %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ field.label }}: {{ field.errors|striptags }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{message}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <h2 class="card-title text-info mt-3 ms-4">Login</h2>
+                    <hr class="mt-0">
+                    <div class="card-body">
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            
+                            <input type="submit" value="Login" class="btn btn-danger fw-bold px-5 w-100 h-auto">
+    
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

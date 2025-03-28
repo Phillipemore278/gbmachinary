@@ -1,0 +1,90 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8 mt-4">
+              <h3 class="text-center">Customer Dashboard</h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Dashboard</h1>
+            <div class="row justify-content-between align-item-center">
+              <div class="col-7 col-md-10">
+                <p class="lead mb-0">Welcome <span class="text-success fw-bold">{{request.user.full_name}}</span></p>
+              </div>
+              <div class="col-5 col-md-2"><a href="{% url 'account:change_password_customer' %}" class="btn btn-outline-secondary btn-sm fw-bold px-5">Settings</a></div>
+            </div>
+            
+            {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      {{message}}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+            {% endif %}
+                    
+            <hr class="mt-0">
+        </div>
+    </div>
+    
+    <div class="row py-5">
+        <div class="col-md-12">
+            <h2 class="text-center text-primary">My Orders</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order ID</th>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Paid</th>
+                                <th scope="col">Balance</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in orders %}
+                              <tr>
+                                <td>{{order.order_key}}</td>
+                                <td>{{order.created}}</td>
+                                <td>{{order.email}}</td>
+                                <td>${{order.total|intcomma}}</td>
+                                <td>${{order.paid|intcomma}}</td>
+                                <td>${{order.get_final_balance|intcomma}}</td>
+                                <td>
+                                {% if order.status == 'Pending, awaiting payment' %}
+                                  <strong class="text-warning">{{order.status}}</strong>
+                                {% elif order.status == 'Delivery in Progress' %}
+                                  <strong class="text-primary">{{order.status}}</strong>
+                                {% elif order.status == 'Stopped by custom' %}
+                                  <strong class="text-danger">{{order.status}}</strong>
+                                {% else %}
+                                  <strong class="text-success">{{order.status}}</strong>
+                                {% endif %}
+                                </td>
+                                <td><a href="{% url 'account:order_detail' order.id %}" class="btn btn-primary btn-sm fw-bold text-white">View Receipt</a></td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

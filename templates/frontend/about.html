@@ -1,0 +1,104 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- banner -->
+<div class="banner-about">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8">
+              <h3 class="text-center"><a href="">Home</a>/ About </h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- card sirt -->
+<section id="about-us">
+    <div class="container py-5">
+      <div class="row py-2">
+        <div class="col-md-6">
+          <h1 class="text-danger">Who We are!</h1>
+          <h3 class="text-primary">Our History</h3>
+          <hr>
+          <p class="lead fw-bold">Providing an incident-free workplace is at the core of everything we do and is part of our commitment to deliver innovative, reliable, and efficient services to our customers. Through our focus on managing high risk activities, being data driven and leadership engagement, we proactively pursue reliable controls to prevent incidents and to safeguard the welfare of our employees, customers, communities, suppliers, and the environment. From training to execution, Parker employees prove daily that "no hurts, no spills, and zero recordable incidents" is achievable. We believe in "doing the job right…every time."</p>
+          <ul>
+            <li>Our team helps customers better manage costs and mitigate risks through the provision of advanced safety equipments, efficient, and cost-effective operation of both our global fleet of drilling rigs equipment and also by operating and maintaining customer-owned rig</li>
+            <li>Our team takes pride in delivering services that meet our customer's exact requirements, by prioritizing Safety Tools, Procedural Discipline, Competency, Audit and Assessment, and Key Performance Indicators</li>
+            <li>Our name says a lot about who we are. We serve customers all over the world. We have the same pride in our products that citizens have in their state. We strive to be the market leader and provider of choice for oilfield tool sales, rentals, manufacturing and service.</li>
+            <li>We manufacture and distribute top oilfield tools for oil and water well drilling and provide service to keep your equipment running smoothly.</li>
+          </ul>
+
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'images/worker1.jpg' %}" alt="" class="img-fluid img-swell mb-5">
+            <img src="{% static 'images/workers.jpg' %}" alt="" class="img-fluid img-swell">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- mode section -->
+  <section id="mode-section">
+    <div class="container pt-5 pb-3 text-white">
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <h2>WE MANUFACTURE, REFURBISH AND RE-CERTIFY EQUIPMENT FOR LAND AND OFFSHORE DRILLING RIGS.</h2>
+          <p>Proper inspection and testing is critical to keeping your equipment operational and safe. With all of our after sale services, we strive for quality, excellence and your satisfaction.
+          Our equipments are certified in Magnetic Particle Inspection (MPI) and Load Tested by API standards.
+          </p>
+          <p>Thanks to our professional services, quality products, fast delivery and competitive prices, we have built up a very good reputation among our customers. Our products are serving for customers from more than 40 countries, like USA, Venezuela, Argentina, India, Kazakhstan, Uzbekistan, Azerbaijan, Romania, China, Syria and Egypt etc.. </p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- mode section -->
+  <section id="mode-section-2">
+    <div class="container pt-5 pb-3 text-white">
+      <div class="row py-5">
+        <div class="col-md-6">
+          <h3 class="text-info">--  LOCATION</h3> 
+          <h1>Our International Markets</h1>
+          <p>From Alaska to Colombia, Europe, Africa to the Middle East and around the world, GB has the products, services and expertise to ensure your drilling operation runs efficiently and safely.</p>
+          <p>We are always ready to help solve the subsurface energy challenges of today and tomorrow, wherever and whatever they may be.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'images/worker3.jpg' %}" alt="" class="img-fluid" style="opacity: 0.3;">
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- company we work with -->
+<section id="compay-with">
+    <div class="container py-5">
+      <h1 class="text-center text-danger mb-5">
+        Some Of Our Regular Customers
+      </h1>
+      <div class="row bg-light">
+        <div class="col-3 work-with">
+          <img src="{% static 'images/aramco.png' %}" alt="" class="img-fluid">
+        </div>
+        <div class="col-3 work-with">
+          <img src="{% static 'images/snpmf.png' %}" alt="" class="img-fluid">
+        </div>
+        <div class="col-3 work-with">
+          <img src="{% static 'images/exxonmobile.png' %}" alt="" class="img-fluid" >
+        </div>
+        <div class="col-3 work-with">
+          <img src="{% static 'images/pccyf.png' %}" alt="" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<!-- banner -->
+<div class="banner-about">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center py-5 mt-3">
+          <div class="col-8">
+              <h3 class="text-center"><a href="">Home</a>/ Cart Items Summary </h3>
+          </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center py-5">
+        <div class="col-md-6">
+            <div class="card bg-light shadow">
+                <div class="card-body">
+                    <center>
+                        <i class="bi bi-check-circle" style="font-size: 140px; color: green;"></i>
+                    </center>
+                    <p class="fw-bold text-center">Your Order was placed Successfully. <br>
+                        Please check your email for further instructions on how to make payment.
+                        Thank you.
+                    </p>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
