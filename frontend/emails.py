@@ -1,11 +1,12 @@
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.conf import settings
 
 def email_message_send(subject, message,receiver):
     email = EmailMessage(
         subject,
         message,
-        'Global Machinary <contact@globalmachinary.com>',
+        settings.DEFAULT_FROM_EMAIL,
         [receiver],
         )
     email.content_subtype = "html"

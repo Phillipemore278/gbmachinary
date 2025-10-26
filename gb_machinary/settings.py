@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'cloudinary',
     'django.contrib.humanize',
+    "anymail",
 
     'store',
     'account',
@@ -159,18 +160,13 @@ cloudinary.config(
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Default “from” email
+DEFAULT_FROM_EMAIL = "Global Machinary <no-reply@mg.globalmachinary.com>"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.zoho.com'
-EMAIL_PORT = 465
-# EMAIL_PORT = 587
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'Global Machinary <contact@globalmachinary.com>'
+# Use Anymail + Resend backend
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
 
-
-
-
-
+# Anymail / Resend settings
+ANYMAIL = {
+    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),  # we’ll set this in Render
+}
